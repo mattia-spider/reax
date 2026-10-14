@@ -132,7 +132,7 @@ class FitEpoch(train.Train):
         optimizers: list["reax.Optimizer"],
         engine: "reax.Engine",
         *,
-        rngs: nnx.Rngs = None,
+        rngs: nnx.Rngs | None = None,
         fast_dev_run: bool | int = False,
         min_updates: int = 0,
         max_updates: int | float | None = None,
@@ -234,7 +234,9 @@ class FitEpoch(train.Train):
 
         # Only the root stage does setup as this only needs to be done once per stage tree
         if self.is_root and self._module is not None:
-            self._module.setup(self, next(iter(self.train_dataloader)))
+            self._module.setup(
+                self._engine, stage=self.name, batch=next(iter(self.train_dataloader))
+            )
             params = self._engine.to_device(self._module.parameters())
             self._module.set_parameters(params)
 
@@ -359,7 +361,7 @@ class Fit(stages.Stage):
         optimizers: "list[reax.Optimizer]",
         engine: "reax.Engine",
         *,
-        rngs: nnx.Rngs = None,
+        rngs: nnx.Rngs | None = None,
         fast_dev_run: bool | int = False,
         max_epochs: int | None = None,
         min_epochs: int = 0,

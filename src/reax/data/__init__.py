@@ -6,6 +6,7 @@ from . import (
     dataloaders,
     datamodules,
     datasets,
+    fetchers,
     kfold,
     samplers,
     utils,
@@ -23,7 +24,7 @@ from .utils import *
 
 __all__ = (
     _datasources.__all__
-    + _datasource_manager.___all__
+    + _datasource_manager.__all__
     + datasets.__all__
     + dataloaders.__all__
     + datamodules.__all__
@@ -32,5 +33,8 @@ __all__ = (
     + _types.__all__
     + utils.__all__
     + kfold.__all__
-    + ("samplers",)
+    + (
+        "fetchers",
+        "samplers",
+    )
 )
